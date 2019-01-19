@@ -1,0 +1,21 @@
+#### nlu-catapod
+
+1) Install requirements
+```
+sudo pip3 install -r requirements.txt
+```
+2) Download multilang ner model from spacy
+```
+python -m spacy download xx_ent_wiki_sm
+python -m spacy download en
+```
+
+```
+python3 nlu_model.py --train --compare_ner
+```
+
+P.S:
+if you have trouble with thinkc(spacy dep) on mojave install it first using opt
+```
+sudo pip3 install thinc==6.10.3 --global-option="-std=libc++"
+```

@@ -116,3 +116,6 @@ dmypy.json
 
 #idea files
 .idea/*
+
+#models
+models/*

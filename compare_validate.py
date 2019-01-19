@@ -10,11 +10,19 @@ def test_ner_treshold(interpreter, cases):
         print(green('result entities: %s' % result_entities))
         for prediction_name, prediction_treshold in entities['entity']['ner_crf'].items():
             print('searching entity: %s with treshold %s' % (prediction_name, prediction_treshold))
-
-            for res_ent in result_entities:
-                if res_ent['entity'] == prediction_name and res_ent['confidence'] < prediction_treshold:
-                    print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
-                              % (prediction_name, res_ent['confidence'], prediction_treshold)))
+            if isinstance(prediction_treshold, dict):
+                if [e['entity'] == prediction_name for e in result_entities].count(True) != prediction_treshold['instances']:
+                    print(red('ENTITY COUNT IS WRONG: %s, expecting %s'
+                          % (prediction_name, prediction_treshold['instances'])))
+                for res_ent in result_entities:
+                    if res_ent['entity'] == prediction_name and res_ent['confidence'] < prediction_treshold['val']:
+                        print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
+                                  % (prediction_name, res_ent['confidence'], prediction_treshold)))
+            else:
+                for res_ent in result_entities:
+                    if res_ent['entity'] == prediction_name and res_ent['confidence'] < prediction_treshold:
+                        print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
+                                  % (prediction_name, res_ent['confidence'], prediction_treshold)))
 
 
 def calculate_ner(interpreter, cases):

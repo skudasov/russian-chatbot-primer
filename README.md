@@ -10,7 +10,7 @@ python -m spacy download xx_ent_wiki_sm
 python -m spacy download en
 ```
 
-3) Lable conversation dataset for ner
+3) LabeL conversation dataset for ner
 ```
 npm i rasa-nlu-trainer
 rasa-nlu-trainer -v data/training_data.json

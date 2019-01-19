@@ -50,30 +50,6 @@
         ]
       },
       {
-        "text": "большую",
-        "intent": "order_food",
-        "entities": [
-          {
-            "start": 0,
-            "end": 7,
-            "value": "большую",
-            "entity": "pizza_size"
-          }
-        ]
-      },
-      {
-        "text": "маленькую",
-        "intent": "order_food",
-        "entities": [
-          {
-            "start": 0,
-            "end": 9,
-            "value": "маленькую",
-            "entity": "pizza_size"
-          }
-        ]
-      },
-      {
         "text": "Хочу заказать пиццу с сыром",
         "intent": "order_food",
         "entities": [
@@ -132,6 +108,16 @@
             "entity": "pizza_size"
           }
         ]
+      },
+      {
+        "text": "привет",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "здравствуй",
+        "intent": "greet",
+        "entities": []
       }
     ]
   }

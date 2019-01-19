@@ -3,6 +3,13 @@ from itertools import cycle
 from colors import yellow, green, red
 
 
+def test_intents_treshold(interpreter, cases):
+    for utter, entities in cases.items():
+        result = interpreter.parse(utter)
+        intent = result['intent']
+        intent_ranking = result['intent_ranking']
+        print('result intents: %s, rankings: %s' % (intent, intent_ranking))
+
 def test_ner_treshold(interpreter, cases):
     for utter, entities in cases.items():
         print(yellow("case: %s" % entities['case']))
@@ -14,26 +21,24 @@ def test_ner_treshold(interpreter, cases):
                 if [e['entity'] == prediction_name for e in result_entities].count(True) != prediction_treshold['instances']:
                     print(red('ENTITY COUNT IS WRONG: %s, expecting %s'
                           % (prediction_name, prediction_treshold['instances'])))
-                for res_ent in result_entities:
-                    if res_ent['entity'] == prediction_name and res_ent['confidence'] < prediction_treshold['val']:
-                        print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
-                                  % (prediction_name, res_ent['confidence'], prediction_treshold)))
-            else:
-                for res_ent in result_entities:
-                    if res_ent['entity'] == prediction_name and res_ent['confidence'] < prediction_treshold:
-                        print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
-                                  % (prediction_name, res_ent['confidence'], prediction_treshold)))
+                # val is inside dict, no other information is needed anymore
+                prediction_treshold = prediction_treshold['val']
+
+            for res_ent in result_entities:
+                if res_ent['entity'] == prediction_name and res_ent['confidence'] < prediction_treshold:
+                    print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
+                              % (prediction_name, res_ent['confidence'], prediction_treshold)))
 
 
 def calculate_ner(interpreter, cases):
     names = []
     confidences = []
     for utter, entities in cases.items():
-        result_entities = interpreter.parse(utter)['entities']
+        result = interpreter.parse(utter)
         for prediction_name, prediction_treshold in entities['entity']['ner_crf'].items():
-            for res_ent in result_entities:
+            for res_ent in result['entities']:
                 if res_ent['entity'] == prediction_name:
-                    names.append("%s -> %s" % (res_ent['value'], res_ent['entity']))
+                    names.append("%s\n %s -> %s" % (result['text'], res_ent['value'], res_ent['entity']))
                     confidences.append(res_ent['confidence'])
     return names, confidences
 
@@ -65,8 +70,8 @@ def plot_comparative_bars(model_names=None, entities=None, confidences=None):
     # create plot
     fig, ax = plt.subplots()
     index = np.arange(n_groups)
-    bar_width = 0.15
-    opacity = 0.8
+    bar_width = 0.20
+    opacity = 0.9
 
     colors_cycle = cycle(['b', 'g', 'r', 'y'])
 

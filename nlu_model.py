@@ -13,7 +13,7 @@ from rasa_nlu import config
 
 from colors import yellow
 from compare_validate import test_ner_treshold, get_model_config_paths, plot_comparative_bars, calculate_ner, \
-    fill_missing_data_with_zeroes
+    fill_missing_data_with_zeroes, test_intents_treshold
 from tests.ner_cases import cases
 
 
@@ -60,7 +60,9 @@ if __name__ == '__main__':
             interpreter = Interpreter.load('./models/%s/default/%s' % (model_name, model_name))
 
 
+            test_intents_treshold(interpreter, cases)
             test_ner_treshold(interpreter, cases)
+
             entity_names, confidences = calculate_ner(interpreter, cases)
             model_names.append(model_name)
             entity_confidences.append(confidences)

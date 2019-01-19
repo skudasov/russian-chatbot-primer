@@ -1,9 +1,9 @@
-language: "ru"
+language: "en"
 pipeline:
 # this is using the spacy sklearn pipeline, adding duckling
 # all components will use their default values
 - name: "nlp_spacy"
-  model: "xx_ent_wiki_sm"
+#  model: "xx_ent_wiki_sm"
 - name: "tokenizer_spacy"
 - name: "intent_entity_featurizer_regex"
 - name: "intent_featurizer_spacy"

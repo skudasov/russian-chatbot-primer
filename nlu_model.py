@@ -12,7 +12,8 @@ from rasa_nlu.model import Trainer, Metadata, Interpreter
 from rasa_nlu import config
 
 from colors import yellow
-from compare_validate import test_ner_treshold, get_model_config_paths, plot_comparative_bars, calculate_ner
+from compare_validate import test_ner_treshold, get_model_config_paths, plot_comparative_bars, calculate_ner, \
+    fill_missing_data_with_zeroes
 from tests.ner_cases import cases
 
 
@@ -64,7 +65,10 @@ if __name__ == '__main__':
             model_names.append(model_name)
             entity_confidences.append(confidences)
 
-        print(entity_names, entity_confidences)
+        print('entity_names: %s' % entity_names)
+        for e in entity_confidences:
+            print('data collected: %s' % len(e))
+        fill_missing_data_with_zeroes(entity_confidences)
         plot_comparative_bars(
             model_names=model_names,
             entities=entity_names,

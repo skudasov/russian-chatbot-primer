@@ -42,6 +42,18 @@ def get_model_config_paths(filepath="./config"):
     for _, _, files in os.walk(filepath):
         return files
 
+def fill_missing_data_with_zeroes(data):
+    lens = []
+    for e in data:
+        lens.append(len(e))
+    max_len = max(lens)
+    for e in data:
+        to_fill = max_len - len(e)
+        if to_fill > 0:
+            for _ in range(to_fill):
+                e.append(0)
+    return data
+
 
 def plot_comparative_bars(model_names=None, entities=None, confidences=None):
     import numpy as np
@@ -60,7 +72,6 @@ def plot_comparative_bars(model_names=None, entities=None, confidences=None):
 
     step = 0
     for idx, model_name in enumerate(model_names):
-        # step = bar_width if idx > 0 else 0
         plt.barh(index + step, confidences[idx], bar_width,
                  alpha=opacity,
                  color=next(colors_cycle),

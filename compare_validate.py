@@ -1,27 +1,29 @@
 import os
+from datetime import datetime
 from itertools import cycle
 from colors import yellow, green, red
 
+def extract(data):
+    return data['intent'], data['intent_ranking'], data['entities']
 
-def test_intents_treshold(interpreter, cases):
-    for utter, entities in cases.items():
+def test_tresholds(interpreter, cases):
+    for utter, rules in cases.items():
+        print(yellow("case: %s" % rules['case']))
+
         result = interpreter.parse(utter)
-        intent = result['intent']
-        intent_ranking = result['intent_ranking']
-        print('result intents: %s, rankings: %s' % (intent, intent_ranking))
 
-def test_ner_treshold(interpreter, cases):
-    for utter, entities in cases.items():
-        print(yellow("case: %s" % entities['case']))
-        result_entities = interpreter.parse(utter)['entities']
+        intent, intent_rankings, result_entities = extract(result)
+        if intent['name'] != rules['intent']:
+            print(red("INTENT DETECTION FAILED: expecting %s, found %s" % (rules['intent'], intent['name'])))
+
         print(green('result entities: %s' % result_entities))
-        for prediction_name, prediction_treshold in entities['entity']['ner_crf'].items():
+        for prediction_name, prediction_treshold in rules['entity']['ner_crf'].items():
             print('searching entity: %s with treshold %s' % (prediction_name, prediction_treshold))
             if isinstance(prediction_treshold, dict):
                 if [e['entity'] == prediction_name for e in result_entities].count(True) != prediction_treshold['instances']:
                     print(red('ENTITY COUNT IS WRONG: %s, expecting %s'
                           % (prediction_name, prediction_treshold['instances'])))
-                # val is inside dict, no other information is needed anymore
+                # treshold is inside dict, no other information is needed anymore
                 prediction_treshold = prediction_treshold['val']
 
             for res_ent in result_entities:
@@ -59,8 +61,10 @@ def fill_missing_data_with_zeroes(data):
                 e.append(0)
     return data
 
+def generate_plot_name():
+    return "%s-%s.png" % ("tests(intent, ner)-", datetime.now())
 
-def plot_comparative_bars(model_names=None, entities=None, confidences=None):
+def plot_comparative_bars(model_names=None, entities=None, confidences=None, dpi=100):
     import numpy as np
     import matplotlib.pyplot as plt
 
@@ -90,4 +94,4 @@ def plot_comparative_bars(model_names=None, entities=None, confidences=None):
     plt.legend()
 
     plt.tight_layout()
-    plt.show()
+    plt.savefig(generate_plot_name(), dpi=dpi)

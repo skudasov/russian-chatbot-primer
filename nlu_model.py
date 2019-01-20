@@ -12,9 +12,9 @@ from rasa_nlu.model import Trainer, Metadata, Interpreter
 from rasa_nlu import config
 
 from colors import yellow
-from compare_validate import test_ner_treshold, get_model_config_paths, plot_comparative_bars, calculate_ner, \
-    fill_missing_data_with_zeroes, test_intents_treshold
-from tests.ner_cases import cases
+from compare_validate import test_tresholds, get_model_config_paths, plot_comparative_bars, calculate_ner, \
+    fill_missing_data_with_zeroes
+from tests.cases import cases
 
 
 def train(data=None, config_file=None, model_dir=None, model_name=None):
@@ -59,9 +59,7 @@ if __name__ == '__main__':
             print(yellow("loading model: %s" % model_name))
             interpreter = Interpreter.load('./models/%s/default/%s' % (model_name, model_name))
 
-
-            test_intents_treshold(interpreter, cases)
-            test_ner_treshold(interpreter, cases)
+            test_tresholds(interpreter, cases)
 
             entity_names, confidences = calculate_ner(interpreter, cases)
             model_names.append(model_name)

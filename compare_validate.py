@@ -65,9 +65,10 @@ def calculate_plot_data(interpreter, cases):
     return ner_names, ner_confidences, intent_names, intent_confidences
 
 
-def get_model_config_paths(filepath="./config"):
-    for _, _, files in os.walk(filepath):
+def all_filenames_in_dir(dirpath):
+    for _, _, files in os.walk(dirpath):
         return files
+
 
 
 def fill_missing_data_with_zeroes(data):

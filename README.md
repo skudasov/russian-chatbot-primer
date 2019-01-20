@@ -15,9 +15,10 @@ python -m spacy download en
 npm i rasa-nlu-trainer
 rasa-nlu-trainer -v data/training_data.json
 ```
-4) Train models and compare (see config dir for pipelines)
+4) Train models and compare between models or datasets (see config dir for pipelines)
 ```
-python3 nlu_model.py --train --compare_ner
+python3 testrunner.py --compare_crossmodel
+python3 testrunner.py --compare_crossdataset --model config_spacy_multilang.yml
 ```
 
 P.S:

@@ -1,0 +1,124 @@
+{
+  "rasa_nlu_data": {
+    "common_examples": [
+      {
+        "text": "Хочу заказать пиццу",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 14,
+            "end": 19,
+            "value": "пиццу",
+            "entity": "product_type"
+          }
+        ]
+      },
+      {
+        "text": "Хочу заказать большую пиццу",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 14,
+            "end": 21,
+            "value": "большую",
+            "entity": "pizza_size"
+          },
+          {
+            "start": 22,
+            "end": 27,
+            "value": "пиццу",
+            "entity": "product_type"
+          }
+        ]
+      },
+      {
+        "text": "Хочу заказать маленькую пиццу",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 14,
+            "end": 23,
+            "value": "маленькую",
+            "entity": "pizza_size"
+          },
+          {
+            "start": 24,
+            "end": 29,
+            "value": "пиццу",
+            "entity": "product_type"
+          }
+        ]
+      },
+      {
+        "text": "Хочу заказать пиццу с сыром",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 14,
+            "end": 19,
+            "value": "пиццу",
+            "entity": "product_type"
+          },
+          {
+            "start": 22,
+            "end": 27,
+            "value": "сыром",
+            "entity": "pizza_topping"
+          }
+        ]
+      },
+      {
+        "text": "Хочу заказать пиццу с ветчиной",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 14,
+            "end": 19,
+            "value": "пиццу",
+            "entity": "product_type"
+          },
+          {
+            "start": 22,
+            "end": 30,
+            "value": "ветчиной",
+            "entity": "pizza_topping"
+          }
+        ]
+      },
+      {
+        "text": "Привези большую пиццу с анчоусами",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 16,
+            "end": 21,
+            "value": "пиццу",
+            "entity": "product_type"
+          },
+          {
+            "start": 24,
+            "end": 33,
+            "value": "анчоусами",
+            "entity": "pizza_topping"
+          },
+          {
+            "start": 8,
+            "end": 15,
+            "value": "большую",
+            "entity": "pizza_size"
+          }
+        ]
+      },
+      {
+        "text": "привет",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "здравствуй",
+        "intent": "greet",
+        "entities": []
+      }
+    ]
+  }
+}

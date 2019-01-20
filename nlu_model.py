@@ -75,9 +75,10 @@ if __name__ == '__main__':
         for e in crossmodel_ner_confidences:
             print('data collected: %s' % len(e))
 
+        fill_missing_data_with_zeroes(crossmodel_intent_confidences)
         fill_missing_data_with_zeroes(crossmodel_ner_confidences)
         print(yellow("intent names: %s" % intent_names))
-        print(yellow("intent confidences: %s" % intent_confidences))
+        print(yellow("intent confidences: %s" % crossmodel_intent_confidences))
         print(yellow("ner names: %s" % ner_names))
         print(yellow("ner confidences: %s" % crossmodel_ner_confidences))
 

@@ -80,7 +80,7 @@ def fill_missing_data_with_zeroes(data):
 def name_plot(name):
     return "tests-%s-%s.png" % (name, datetime.now())
 
-def plot_comparative_bars(
+def plot_crossmodel_comparative_bars(
         plot_filename=None,
         ylabel=None,
         xlabel=None,
@@ -106,46 +106,6 @@ def plot_comparative_bars(
     step = 0
     for idx, model_name in enumerate(model_names):
         plt.barh(index + step, confidences[idx], bar_width,
-                 alpha=opacity,
-                 color=next(colors_cycle),
-                 label=model_name)
-        step += bar_width
-
-    plt.ylabel(ylabel)
-    plt.xlabel(xlabel)
-    plt.title(title)
-    plt.yticks(index + bar_width, entities)
-    plt.legend()
-
-    plt.tight_layout()
-    plt.savefig(name_plot(plot_filename), dpi=dpi)
-
-def plot_intents(
-        plot_filename=None,
-        ylabel=None,
-        xlabel=None,
-        title=None,
-        model_names=None,
-        entities=None,
-        confidences=None,
-        dpi=100):
-    import numpy as np
-    import matplotlib.pyplot as plt
-
-    # data to plot
-    n_groups = len(confidences)
-
-    # create plot
-    fig, ax = plt.subplots()
-    index = np.arange(n_groups)
-    bar_width = 0.20
-    opacity = 0.9
-
-    colors_cycle = cycle(['b', 'g', 'r', 'y'])
-
-    step = 0
-    for idx, model_name in enumerate(model_names):
-        plt.barh(index + step, confidences, bar_width,
                  alpha=opacity,
                  color=next(colors_cycle),
                  label=model_name)

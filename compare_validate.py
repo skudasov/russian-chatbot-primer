@@ -12,7 +12,7 @@ def test_tresholds(interpreter, cases):
 
         result = interpreter.parse(utter)
 
-        intent, intent_rankings, result_entities = extract(result)
+        intent, _, result_entities = extract(result)
         if intent['name'] != rules['intent']:
             print(red("INTENT DETECTION FAILED: expecting %s, found %s" % (rules['intent'], intent['name'])))
 
@@ -32,17 +32,28 @@ def test_tresholds(interpreter, cases):
                               % (prediction_name, res_ent['confidence'], prediction_treshold)))
 
 
-def calculate_ner(interpreter, cases):
-    names = []
-    confidences = []
+def calculate_plot_data(interpreter, cases):
+    """
+    Check intents and ner confidences
+    :param interpreter:
+    :param cases:
+    :return: [], [], [[]...]
+    """
+    ner_names = []
+    ner_confidences = []
+    intent_names = []
+    intent_confidences = []
     for utter, entities in cases.items():
         result = interpreter.parse(utter)
+        intent, _, result_entities = extract(result)
+        intent_names.append(intent['name'])
+        intent_confidences.append(intent['confidence'])
         for prediction_name, prediction_treshold in entities['entity']['ner_crf'].items():
-            for res_ent in result['entities']:
+            for res_ent in result_entities:
                 if res_ent['entity'] == prediction_name:
-                    names.append("%s\n %s -> %s" % (result['text'], res_ent['value'], res_ent['entity']))
-                    confidences.append(res_ent['confidence'])
-    return names, confidences
+                    ner_names.append("%s\n %s -> %s" % (result['text'], res_ent['value'], res_ent['entity']))
+                    ner_confidences.append(res_ent['confidence'])
+    return ner_names, ner_confidences, intent_names, intent_confidences
 
 
 def get_model_config_paths(filepath="./config"):
@@ -50,6 +61,11 @@ def get_model_config_paths(filepath="./config"):
         return files
 
 def fill_missing_data_with_zeroes(data):
+    """
+    Fill missing data with zeroes in order to plot graph
+    :param data: [[]...]
+    :return:  [[]...]
+    """
     lens = []
     for e in data:
         lens.append(len(e))
@@ -61,10 +77,18 @@ def fill_missing_data_with_zeroes(data):
                 e.append(0)
     return data
 
-def generate_plot_name():
-    return "%s-%s.png" % ("tests(intent, ner)-", datetime.now())
+def name_plot(name):
+    return "tests-%s-%s.png" % (name, datetime.now())
 
-def plot_comparative_bars(model_names=None, entities=None, confidences=None, dpi=100):
+def plot_comparative_bars(
+        plot_filename=None,
+        ylabel=None,
+        xlabel=None,
+        title=None,
+        model_names=None,
+        entities=None,
+        confidences=None,
+        dpi=100):
     import numpy as np
     import matplotlib.pyplot as plt
 
@@ -87,11 +111,51 @@ def plot_comparative_bars(model_names=None, entities=None, confidences=None, dpi
                  label=model_name)
         step += bar_width
 
-    plt.ylabel('Entities')
-    plt.xlabel('Confidences')
-    plt.title('Confidences by entities')
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
+    plt.title(title)
     plt.yticks(index + bar_width, entities)
     plt.legend()
 
     plt.tight_layout()
-    plt.savefig(generate_plot_name(), dpi=dpi)
+    plt.savefig(name_plot(plot_filename), dpi=dpi)
+
+def plot_intents(
+        plot_filename=None,
+        ylabel=None,
+        xlabel=None,
+        title=None,
+        model_names=None,
+        entities=None,
+        confidences=None,
+        dpi=100):
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    # data to plot
+    n_groups = len(confidences)
+
+    # create plot
+    fig, ax = plt.subplots()
+    index = np.arange(n_groups)
+    bar_width = 0.20
+    opacity = 0.9
+
+    colors_cycle = cycle(['b', 'g', 'r', 'y'])
+
+    step = 0
+    for idx, model_name in enumerate(model_names):
+        plt.barh(index + step, confidences, bar_width,
+                 alpha=opacity,
+                 color=next(colors_cycle),
+                 label=model_name)
+        step += bar_width
+
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
+    plt.title(title)
+    plt.yticks(index + bar_width, entities)
+    plt.legend()
+
+    plt.tight_layout()
+    plt.savefig(name_plot(plot_filename), dpi=dpi)

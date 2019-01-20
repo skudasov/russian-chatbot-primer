@@ -12,8 +12,8 @@ from rasa_nlu.model import Trainer, Metadata, Interpreter
 from rasa_nlu import config
 
 from colors import yellow
-from compare_validate import test_tresholds, get_model_config_paths, plot_comparative_bars, calculate_ner, \
-    fill_missing_data_with_zeroes
+from compare_validate import test_tresholds, get_model_config_paths, plot_comparative_bars, calculate_plot_data, \
+    fill_missing_data_with_zeroes, plot_intents
 from tests.cases import cases
 
 
@@ -51,8 +51,10 @@ if __name__ == '__main__':
             )
     if args.compare_ner:
         model_names = []
-        entity_names = None
+        ner_names = None
         entity_confidences = []
+        intent_names = None
+        intent_confidences = None
 
         for p in get_model_config_paths():
             model_name = get_model_name_by_cfg(p)
@@ -61,16 +63,31 @@ if __name__ == '__main__':
 
             test_tresholds(interpreter, cases)
 
-            entity_names, confidences = calculate_ner(interpreter, cases)
+            ner_names, ner_confidences, intent_names, intent_confidences = calculate_plot_data(interpreter, cases)
+            print("intents: %s" % intent_confidences)
             model_names.append(model_name)
-            entity_confidences.append(confidences)
+            entity_confidences.append(ner_confidences)
 
-        print('entity_names: %s' % entity_names)
+        print('entity_names: %s' % ner_names)
         for e in entity_confidences:
             print('data collected: %s' % len(e))
         fill_missing_data_with_zeroes(entity_confidences)
         plot_comparative_bars(
+            plot_filename='ner',
+            ylabel='Entities',
+            xlabel='Confidences',
+            title='Entities by confidences',
             model_names=model_names,
-            entities=entity_names,
+            entities=ner_names,
             confidences=entity_confidences
+        )
+
+        plot_intents(
+            plot_filename='intent',
+            ylabel='Intents',
+            xlabel='Confidences',
+            title='Intents by confidences',
+            model_names=model_names,
+            entities=intent_names,
+            confidences=intent_confidences
         )

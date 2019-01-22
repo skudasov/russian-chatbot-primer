@@ -4,10 +4,18 @@ cases = {
         'case': 'знаки препинания',
         'intent': 'order_food',
         'entity': {
-            'ner_crf': {
-                'product_type': 0.7,
-                'pizza_size': 0.7
-            }
+            'ner_crf': [
+                {
+                    'name': 'product_type',
+                    'value': 'пиццу',
+                    'confidence': 0.7,
+                },
+                {
+                    'name': 'pizza_size',
+                    'value': 'большую',
+                    'confidence': 0.7,
+                }
+            ]
         }
     },
     'Хочу заказать б ольшую пиццу': {
@@ -15,10 +23,18 @@ cases = {
         'case': 'выделяем сущность с пробелом',
         'intent': 'order_food',
         'entity': {
-            'ner_crf': {
-                'product_type': 0.7,
-                'pizza_size': 0.7
-            }
+            'ner_crf': [
+                {
+                    'name': 'product_type',
+                    'value': 'пиццу',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'pizza_size',
+                    'value': 'ольшую',
+                    'confidence': 0.7
+                }
+            ]
         }
     },
     'Хочу заказать пиццу с свром': {
@@ -26,10 +42,18 @@ cases = {
         'case': 'выделяем сущность с ошибкой',
         'intent': 'order_food',
         'entity': {
-            'ner_crf': {
-                'product_type': 0.7,
-                'pizza_topping': 0.7
-            }
+            'ner_crf': [
+                {
+                    'name': 'product_type',
+                    'value': 'пиццу',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'pizza_topping',
+                    'value': 'свром',
+                    'confidence': 0.7
+                }
+            ]
         }
     },
     'Нужна пицца с глазами тритона и хвостом': {
@@ -37,13 +61,18 @@ cases = {
         'case': 'выделяем сущность сильно превосходящую по размеру',
         'intent': 'order_food',
         'entity': {
-            'ner_crf': {
-                'product_type': 0.7,
-                'pizza_topping': {
-                    'val': 0.7,
-                    'instances': 2,
-                }
-            }
+            'ner_crf': [
+                {
+                    'name': 'product_type',
+                    'value': 'пицца',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'pizza_topping',
+                    'value': 'глазами тритона',
+                    'confidence': 0.7
+                },
+            ],
         }
     },
     'доставь пиццу с беконом, среднюю': {
@@ -51,10 +80,23 @@ cases = {
         'case': 'меняем порядок слов',
         'intent': 'order_food',
         'entity': {
-            'ner_crf': {
-                'product_type': 0.7,
-                'pizza_topping': 0.7
-            }
+            'ner_crf': [
+                {
+                    'name': 'product_type',
+                    'value': 'пицца',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'pizza_size',
+                    'value': 'среднюю',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'pizza_topping',
+                    'value': 'беконом',
+                    'confidence': 0.7
+                }
+            ],
         }
     },
     'вези 30см пиццу с луком и пармезаном': {
@@ -62,14 +104,28 @@ cases = {
         'case': 'числа имеют значение?',
         'intent': 'order_food',
         'entity': {
-            'ner_crf': {
-                'product_type': 0.7,
-                'pizza_size': 0.7,
-                'pizza_topping': {
-                    'val': 0.7,
-                    'instances': 2
-                }
-            }
+            'ner_crf': [
+                {
+                    'name': 'pizza_topping',
+                    'value': 'луком',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'pizza_topping',
+                    'value': 'пармезаном',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'product_type',
+                    'value': 'пицца',
+                    'confidence': 0.7
+                },
+                {
+                    'name': 'pizza_size',
+                    'value': '30см',
+                    'confidence': 0.7
+                },
+            ]
         }
     },
 }

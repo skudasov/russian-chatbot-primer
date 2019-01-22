@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 from datetime import datetime
 from itertools import cycle
 from colors import yellow, green, red
@@ -15,60 +16,70 @@ def test_tresholds(interpreter, cases):
         result = interpreter.parse(utter)
 
         intent, _, result_entities = extract(result)
-        if intent['name'] != rules['intent']:
+        if not intent:
+            print(red("INTENT DETECTION FAILED: expecting %s, found %s" % (rules['intent'], None)))
+        elif intent['name'] != rules['intent']:
             print(red("INTENT DETECTION FAILED: expecting %s, found %s" % (rules['intent'], intent['name'])))
 
         print(green('result intents: %s' % intent))
         print(green('result entities: %s' % result_entities))
-        for prediction_name, prediction_treshold in rules['entity']['ner_crf'].items():
-            print('searching entity: %s with treshold %s' % (prediction_name, prediction_treshold))
-            if isinstance(prediction_treshold, dict):
-                if [e['entity'] == prediction_name for e in result_entities].count(True) != prediction_treshold[
-                    'instances']:
-                    print(red('ENTITY COUNT IS WRONG: %s, expecting %s'
-                              % (prediction_name, prediction_treshold['instances'])))
-                # treshold is inside dict, no other information is needed anymore
-                prediction_treshold = prediction_treshold['val']
-
+        for test_entity_data in rules['entity']['ner_crf']:
+            print('searching entity: %s with treshold %s' % (test_entity_data['name'], test_entity_data['confidence']))
             for res_ent in result_entities:
-                if res_ent['entity'] == prediction_name and res_ent['confidence'] < prediction_treshold:
-                    print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
-                              % (prediction_name, res_ent['confidence'], prediction_treshold)))
+                if res_ent['entity'] == test_entity_data['name']:
+                    if res_ent['value'] != test_entity_data['value']:
+                        print(red("FAILED PREDICTION: expecting %s -> %s, found %s -> %s"
+                                  % (test_entity_data['name'], test_entity_data['value'], res_ent['entity'], res_ent['value'])))
+                    elif res_ent['confidence'] < test_entity_data['confidence']:
+                        print(red("FAILED PREDICTION: %s prediction is %s that is below treshold %s"
+                                  % (test_entity_data['name'], res_ent['confidence'], test_entity_data['confidence'])))
 
 
 def calculate_plot_data(interpreter, cases):
-    """
-    Check intents and ner confidences, returns only correctly predicted intents and entities
-    :param interpreter:
-    :param cases:
-    :return: [], [], [[]...]
-    """
+    intent_good = 0
+    intent_total = 0
+    ner_good = 0
+    ner_total = 0
+
     ner_names = []
     ner_confidences = []
     intent_names = []
     intent_confidences = []
     for utter, case in cases.items():
+        intent_names.append("id: %s -> %s" % (case['id'], case['intent']))
         result = interpreter.parse(utter)
         intent, _, result_entities = extract(result)
-
-        intent_names.append(case['intent'])
-        if intent['name'] == case['intent']:
+        if not intent:
+            intent_total += 1
+        elif intent['name'] == case['intent']:
+            intent_good += 1
+            intent_total += 1
             intent_confidences.append(intent['confidence'])
+        elif intent['name'] != case['intent']:
+            intent_total += 1
 
-
-        for prediction_name, prediction_treshold in case['entity']['ner_crf'].items():
-            for res_ent in result_entities:
-                # plot only correctly predicted entities
-                if res_ent['entity'] == prediction_name:
-                    ner_names.append("id: [%s] %s -> %s" % (case['id'], res_ent['value'], res_ent['entity']))
+        for test_entity_data in case['entity']['ner_crf']:
+            for idx, res_ent in enumerate(result_entities):
+                if res_ent['entity'] == test_entity_data['name'] and res_ent['value'] == test_entity_data['value']:
+                    ner_names.append("id: [%s] %s -> %s" % (case['id'], res_ent['entity'], res_ent['value']))
                     ner_confidences.append(res_ent['confidence'])
-    return ner_names, ner_confidences, intent_names, intent_confidences
+                    ner_good += 1
+                    ner_total += 1
+                    break
+            else:
+                ner_names.append(
+                    "!ERR NOT FOUND! id: [%s] %s -> %s" % (case['id'], test_entity_data['name'], test_entity_data['value']))
+                ner_confidences.append(0.0)
+                ner_total += 1
+
+    intent_rate = (intent_good / intent_total) if intent_total > 0 else 0
+    ner_rate = (ner_good / ner_total) if ner_total > 0 else 0
+    return ner_names, ner_confidences, intent_names, intent_confidences, intent_rate, ner_rate
 
 
 def all_filenames_in_dir(dirpath):
     for _, _, files in os.walk(dirpath):
         return files
-
 
 
 def fill_missing_data_with_zeroes(data):
@@ -93,7 +104,7 @@ def name_plot(name):
     return "tests-%s-%s.png" % (name, datetime.now())
 
 
-def plot_crossmodel_comparative_bars(
+def plot_comparative_bars(
         plot_filename=None,
         ylabel=None,
         xlabel=None,
@@ -101,6 +112,7 @@ def plot_crossmodel_comparative_bars(
         model_names=None,
         entities=None,
         confidences=None,
+        total_rates=None,
         dpi=100):
     import numpy as np
     import matplotlib.pyplot as plt

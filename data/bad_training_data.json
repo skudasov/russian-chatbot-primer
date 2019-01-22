@@ -1,0 +1,100 @@
+{
+  "rasa_nlu_data": {
+    "common_examples": [
+      {
+        "text": "Хочу заказать пиццу",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 14,
+            "end": 19,
+            "value": "пиццу",
+            "entity": "product_type"
+          }
+        ]
+      },
+      {
+        "text": "Хочу заказать пиццу с ветчиной",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 0,
+            "end": 19,
+            "value": "Хочу заказать пиццу",
+            "entity": "product_type"
+          },
+          {
+            "start": 24,
+            "end": 29,
+            "value": "тчино",
+            "entity": "pizza_size"
+          }
+        ]
+      },
+      {
+        "text": "привет",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "здравствуй",
+        "intent": "greet",
+        "entities": []
+      },
+      {
+        "text": "На безрыбье и рак - рыба",
+        "intent": "order_good",
+        "entities": [
+          {
+            "start": 20,
+            "end": 24,
+            "value": "рыба",
+            "entity": "product_type"
+          },
+          {
+            "start": 6,
+            "end": 17,
+            "value": "рыбье и рак",
+            "entity": "pizza_topping"
+          }
+        ]
+      },
+      {
+        "text": "Хочу заказать пиццу с ветчиной",
+        "intent": "order_good",
+        "entities": [
+          {
+            "start": 2,
+            "end": 9,
+            "value": "чу зака",
+            "entity": "pizza_size"
+          },
+          {
+            "start": 18,
+            "end": 22,
+            "value": "у с ",
+            "entity": "product_type"
+          }
+        ]
+      },
+      {
+        "text": "Вези что угодно с пиццой",
+        "intent": "order_food",
+        "entities": [
+          {
+            "start": 5,
+            "end": 15,
+            "value": "что угодно",
+            "entity": "pizza_topping"
+          },
+          {
+            "start": 18,
+            "end": 24,
+            "value": "пиццой",
+            "entity": "pizza_size"
+          }
+        ]
+      }
+    ]
+  }
+}

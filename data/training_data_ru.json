@@ -118,6 +118,60 @@
         "text": "здравствуй",
         "intent": "greet",
         "entities": []
+      },
+      {
+        "text": "Вези 30см пиццу с глазами тритона и ядом",
+        "intent": "",
+        "entities": [
+          {
+            "start": 10,
+            "end": 15,
+            "value": "пиццу",
+            "entity": "product_type"
+          },
+          {
+            "start": 5,
+            "end": 9,
+            "value": "30см",
+            "entity": "pizza_size"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "value": "ядом",
+            "entity": "pizza_topping"
+          },
+          {
+            "start": 18,
+            "end": 35,
+            "value": "глазами тритона и",
+            "entity": "pizza_topping"
+          }
+        ]
+      },
+      {
+        "text": "Нужна очень большая пицца",
+        "intent": "",
+        "entities": [
+          {
+            "start": 6,
+            "end": 11,
+            "value": "очень",
+            "entity": "pizza_size"
+          },
+          {
+            "start": 12,
+            "end": 19,
+            "value": "большая",
+            "entity": "pizza_size"
+          },
+          {
+            "start": 20,
+            "end": 25,
+            "value": "пицца",
+            "entity": "product_type"
+          }
+        ]
       }
     ]
   }

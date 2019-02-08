@@ -22,12 +22,12 @@ train-core:
 	python3 -m rasa_core.train -d domain.yml -s data/core/stories.md -c policy.yml --debug -o models/dialogue
 
 run-cmdline:
-	make run-actions&
+	pkill -f run-actions && make run-actions&
 	python3 -m rasa_core.run -d models/dialogue -u models/nlu/current --debug --endpoints endpoints.yml
 
 run-server:
-	make run-actions&
-	python3 -m rasa_core.run --enable_api --debug -d models/dialogue -u models/nlu/current --endpoints endpoints.yml
+	pkill -f run-actions && make run-actions&
+	python3 -m rasa_core.run --enable_api -d models/dialogue -u models/nlu/current --endpoints endpoints.yml --debug
 
 visualize:
 	python3 -m rasa_core.visualize -s data/core/ -d domain.yml -o story_graph.png

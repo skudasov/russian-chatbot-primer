@@ -6,6 +6,9 @@ entities:
 
 intents:
   - order_food
+  - tell_addons
+  - tell_size
+  - tell_type
   - greet
 
 actions:
@@ -13,13 +16,25 @@ actions:
   - action_store_order
   - utter_greet
   - utter_confirm_order
+  - utter_ask_addons
+  - utter_ask_size
+  - utter_ask_type
 
 templates:
   utter_confirm_order:
-  - text: "Обрабатываю заказ"
+  - text: "confirming order"
 
   utter_greet:
   - text: "привет"
+
+  utter_ask_addons:
+  - text: "topping preference?"
+
+  utter_ask_size:
+  - text: "size preference?"
+
+  utter_ask_type:
+  - text: "type preference?"
 
 slots:
   product_type:

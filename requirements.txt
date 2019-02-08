@@ -35,3 +35,4 @@ msgpack==0.5.6
 colorama==0.4.1
 matplotlib==2.1.0
 rasa_core==0.13.0a4
+pytest

@@ -10,3 +10,16 @@
 ## intent:greet
 - Привет
 - Добрый день
+
+## intent:tell_addons
+- с [ветчиной](product_addon)
+- с [сыром](product_addon)
+- с [луком](product_addon)
+
+## intent:tell_size
+- [большую](product_size)
+- [маленькую](product_size)
+- [30cm](product_size)
+
+## intent:tell_type
+- [пиццу](product_type)

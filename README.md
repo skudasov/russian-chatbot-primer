@@ -13,7 +13,7 @@ python -m spacy download en
 3) Retrain, run, act
 ```
 make train-nlu && make train-core && make run-server
-curl -XPOST localhost:5005/conversations/default/respond -d '{"query":"хочу большую пиццу"}'
+curl -XPOST localhost:5005/conversations/default/respond -d '{"query":"хочу большую пиццу с ветчиной"}'
 ```
 
 4) Train model manually

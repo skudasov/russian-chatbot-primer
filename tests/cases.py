@@ -11,7 +11,7 @@ cases = {
                     'confidence': 0.7,
                 },
                 {
-                    'name': 'pizza_size',
+                    'name': 'product_size',
                     'value': 'большую',
                     'confidence': 0.7,
                 }
@@ -30,7 +30,7 @@ cases = {
                     'confidence': 0.7
                 },
                 {
-                    'name': 'pizza_size',
+                    'name': 'product_size',
                     'value': 'ольшую',
                     'confidence': 0.7
                 }
@@ -49,7 +49,7 @@ cases = {
                     'confidence': 0.7
                 },
                 {
-                    'name': 'pizza_topping',
+                    'name': 'product_addon',
                     'value': 'свром',
                     'confidence': 0.7
                 }
@@ -68,7 +68,7 @@ cases = {
                     'confidence': 0.7
                 },
                 {
-                    'name': 'pizza_topping',
+                    'name': 'product_addon',
                     'value': 'глазами тритона',
                     'confidence': 0.7
                 },
@@ -87,12 +87,12 @@ cases = {
                     'confidence': 0.7
                 },
                 {
-                    'name': 'pizza_size',
+                    'name': 'product_size',
                     'value': 'среднюю',
                     'confidence': 0.7
                 },
                 {
-                    'name': 'pizza_topping',
+                    'name': 'product_addon',
                     'value': 'беконом',
                     'confidence': 0.7
                 }
@@ -106,12 +106,12 @@ cases = {
         'entity': {
             'ner_crf': [
                 {
-                    'name': 'pizza_topping',
+                    'name': 'product_addon',
                     'value': 'луком',
                     'confidence': 0.7
                 },
                 {
-                    'name': 'pizza_topping',
+                    'name': 'product_addon',
                     'value': 'пармезаном',
                     'confidence': 0.7
                 },
@@ -121,7 +121,7 @@ cases = {
                     'confidence': 0.7
                 },
                 {
-                    'name': 'pizza_size',
+                    'name': 'product_size',
                     'value': '30см',
                     'confidence': 0.7
                 },

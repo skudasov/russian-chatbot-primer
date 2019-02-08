@@ -1,0 +1,35 @@
+
+entities:
+  - product_type
+  - product_size
+  - product_addon
+
+intents:
+  - order_food
+  - greet
+
+actions:
+  - action_call_pizza
+  - action_store_order
+  - utter_greet
+  - utter_confirm_order
+
+templates:
+  utter_confirm_order:
+  - text: "Обрабатываю заказ"
+
+  utter_greet:
+  - text: "привет"
+
+slots:
+  product_type:
+    type: text
+  product_size:
+    type: text
+  product_addons:
+    type: text
+#  feedback_value:
+#    type: categorical
+#    values:
+#      - positive
+#      - negative

@@ -1,10 +1,10 @@
-
 entities:
   - product_type
   - product_size
-  - product_addon
+  - product_addons
 
 intents:
+  - inform_actions
   - order_food
   - tell_addons
   - tell_size
@@ -12,6 +12,7 @@ intents:
   - greet
 
 actions:
+  - utter_inform_actions
   - action_call_pizza
   - action_store_order
   - utter_greet
@@ -22,7 +23,7 @@ actions:
 
 templates:
   utter_confirm_order:
-  - text: "confirming order"
+  - text: "confirming order: {product_type}, {product_size}, {product_addons}"
 
   utter_greet:
   - text: "привет"
@@ -35,6 +36,9 @@ templates:
 
   utter_ask_type:
   - text: "type preference?"
+
+  utter_inform_actions:
+  - text: "some actions here"
 
 slots:
   product_type:
